@@ -1,0 +1,106 @@
+import tkinter as tk
+from math import *
+
+# メモリー変数を追加
+memory = 0
+
+def calculate():
+    global memory
+    try:
+        result = eval(entry.get())
+        history.insert(tk.END, entry.get() + " = " + str(result))
+        entry.delete(0, tk.END)
+        entry.insert(tk.END, str(result))
+        memory = result  # 計算結果をメモリーに保存
+    except:
+        entry.delete(0, tk.END)
+        entry.insert(tk.END, "無効な入力")
+
+def clear():
+    entry.delete(0, tk.END)
+
+# メモリーから値を取得する関数を追加
+def recall_memory():
+    entry.delete(0, tk.END)
+    entry.insert(tk.END, str(memory))
+
+# 以下のコードは元のままです...
+
+
+def calculate():
+    try:
+        result = eval(entry.get())
+        history.insert(tk.END, entry.get() + " = " + str(result))
+        entry.delete(0, tk.END)
+        entry.insert(tk.END, str(result))
+    except:
+        entry.delete(0, tk.END)
+        entry.insert(tk.END, "無効な入力")
+
+def clear():
+    entry.delete(0, tk.END)
+
+window = tk.Tk()
+window.title("高度な電卓")
+window.geometry("1200x800")
+
+
+
+entry = tk.Entry(window, width=45,font=('Helvetica', 30))
+entry.grid(row=0, column=0, columnspan=4,padx=5,pady=5)
+
+buttons = [
+    '7', '8', '9', '/',
+    '4', '5', '6', '*',
+    '1', '2', '3', '-',
+    '0', '.', '=', '+'
+]
+
+function_buttons = [
+    tk.Button(window, text=func, width=10, height=2, font=('Helvetica', 10), command=lambda func=func: entry.insert(tk.END, " " + func + "() "))
+    for func in ['sin', 'cos', 'tan', 'log', 'sqrt']
+]
+recall_button = tk.Button(window, text="Recall", width=10, height=2, font=('Helvetica', 10), command=recall_memory)
+recall_button.grid(row=6,column=4,padx=5, pady=5)
+
+
+row_val = 1
+col_val = 0
+
+for button in buttons:
+    if button == '=':
+        btn = tk.Button(window, text=button, width=10, height=2, font=('Helvetica', 20), command=calculate)
+        btn.grid(row=row_val, column=col_val, padx=1, pady=1)
+    elif button in '0123456789.':
+        btn = tk.Button(window, text=button, width=10, height=2, font=('Helvetica', 20), command=lambda button=button: entry.insert(tk.END, button))
+        btn.grid(row=row_val, column=col_val, padx=5, pady=5)
+    else:
+        btn = tk.Button(window, text=button, width=10, height=2, font=('Helvetica', 20), command=lambda button=button: entry.insert(tk.END, " " + button + " "))
+        btn.grid(row=row_val, column=col_val, padx=5, pady=5)
+
+    col_val += 1
+    if col_val > 3:
+        col_val = 0
+        row_val += 1
+
+for i in range(5):
+    function_buttons[i].grid(row=i+1,column=4,padx=5, pady=5)
+
+clear_button = tk.Button(window,text='C',width = 10,height = 2 ,font=('Helvetica',20),command = clear)
+clear_button.grid(row=row_val,column = col_val)
+
+history_frame = tk.Listbox(window, width=40, height=5,font=('Helvetica',20) )
+
+history_frame.grid(row=row_val, columnspan=6)
+
+scrollbar = tk.Scrollbar(history_frame)
+scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+history = tk.Listbox(history_frame,width=40, height=5,font=('Helvetica',15) )
+history.pack(side=tk.LEFT)
+
+history.config(yscrollcommand=scrollbar.set)
+scrollbar.config(command=history.yview)
+
+window.mainloop()
+
