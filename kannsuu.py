@@ -104,17 +104,20 @@ class CalculatorApp(tk.Tk):
         history_menu.add_command(label="履歴を表示", command=self.show_history)
 
     def on_button_click(self, value):
-        if value == "=":
-            try:
-                result = str(eval(self.expression))
-                self.history.append(self.expression + " = " + result)
-                self.expression = result
-            except Exception as e:
-                messagebox.showerror("エラー", "計算エラー: " + str(e))
-                self.expression = ""
+      if value == "=":
+        try:
+            result = str(eval(self.expression))
+            self.history.append(self.expression + " = " + result)
+            self.expression = result
+            # 新しい計算結果を履歴リストボックスに追加
+            self.history_listbox.insert(tk.END, self.expression + " = " + result)
+        except Exception as e:
+            messagebox.showerror("エラー", "計算エラー: " + str(e))
+            self.expression = ""
         else:
             self.expression += value
         self.result_var.set(self.expression)
+
 
     def clear(self):
         self.expression = ""
