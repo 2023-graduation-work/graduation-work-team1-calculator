@@ -90,14 +90,20 @@ class CalculatorApp(tk.Tk):
         if value == "=":
             try:
                 result = str(eval(self.expression))
-                self.history.append(self.expression + " = " + result)
+                calculation = f"{self.expression} = {result}"
+                self.history.append(calculation)
+                if len(self.history) > self.history_limit:
+                    self.history.pop(0)  # 履歴の上限を制限
                 self.expression = result
             except Exception as e:
                 messagebox.showerror("エラー", "計算エラー: " + str(e))
                 self.expression = ""
+            # リストボックスに履歴を表示
+            self.show_history()
         else:
             self.expression += value
         self.result_var.set(self.expression)
+
 
     def clear(self):
         self.expression = ""
@@ -150,10 +156,8 @@ class CalculatorApp(tk.Tk):
             messagebox.showinfo("BMI計算結果", f"BMI: {bmi:.2f}")
 
     def show_history(self):
-
         self.history_listbox.delete(0, tk.END)
-
-        for item in self.history[-self.history_limit:]:
+        for item in self.history:
             self.history_listbox.insert(tk.END, item)
 
         if not self.history:
