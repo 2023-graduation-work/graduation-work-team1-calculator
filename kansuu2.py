@@ -39,8 +39,8 @@ class CalculatorApp(tk.Tk):
             ("7", 1, 0), ("8", 1, 1), ("9", 1, 2), ("/", 1, 3),
             ("4", 2, 0), ("5", 2, 1), ("6", 2, 2), ("*", 2, 3),
             ("1", 3, 0), ("2", 3, 1), ("3", 3, 2), ("-", 3, 3),
-            ("0", 4, 0), (".", 4, 1), ("=", 5, 2), ("+", 4, 3),
-            ("(", 5, 0), (")", 5, 1),
+            ("0", 4, 0), (".", 4, 1), ("+", 4, 3),
+            ("(", 5, 0), (")", 5, 1), ("=", 5, 2)
         ]
 
         for (text, row, col) in button_grid:
@@ -50,8 +50,11 @@ class CalculatorApp(tk.Tk):
         clear_button = tk.Button(parent_frame, text="C", command=self.clear)
         clear_button.grid(row=4, column=2,  sticky="nsew")
 
+        # Change the grid() call for the "=" button to span 2 columns
         equal_button = tk.Button(parent_frame, text="=", command=lambda: self.on_button_click("="))
         equal_button.grid(row=5, column=2, columnspan=2, sticky="nsew")
+
+
 
         history_frame = tk.Frame(parent_frame)
 
