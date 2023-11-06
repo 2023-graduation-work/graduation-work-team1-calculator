@@ -31,9 +31,28 @@ class CalculatorApp(tk.Tk):
         display = tk.Entry(parent_frame, textvariable=self.result_var, font=("Helvetica", 20), justify="right")
         display.grid(row=0, column=0, columnspan=4, sticky="news")
 
-        # 2つ目のフレーム
+        
         frame2 = tk.Frame(self, width=200, height=100)
-        frame2.pack()  # pack frame2 into the main frame
+        frame2.pack()  
+
+        self.label1 = tk.Label(frame2, text="身長(cm):")
+        self.label1.grid(row=0, column=0, padx=10, pady=10)
+        
+        self.height_entry = tk.Entry(frame2)
+        self.height_entry.grid(row=0, column=1, padx=10, pady=10)
+
+        self.label2 = tk.Label(frame2, text="体重(kg):")
+        self.label2.grid(row=1, column=0, padx=10, pady=10)
+        
+        self.weight_entry = tk.Entry(frame2)
+        self.weight_entry.grid(row=1, column=1, padx=10, pady=10)
+        
+        self.button = tk.Button(frame2, text = "計算", command=self.calculate_bmi) 
+        self.button.grid(row=2, columnspan=2, padx=10, pady=10)
+        
+        self.result_label = tk.Label(frame2,text = "ここにBMIが表示されます")
+        self.result_label.grid(row=3, columnspan=2, padx=10)
+        
 
         button_grid = [
             ("7", 1, 0), ("8", 1, 1), ("9", 1, 2), ("/", 1, 3),
@@ -84,13 +103,8 @@ class CalculatorApp(tk.Tk):
         tax_menu.add_command(label="税抜価格から税込価格を計算", command=self.calculate_tax_included)
         tax_menu.add_command(label="税込価格から税抜価格を計算", command=self.calculate_tax_excluded)
 
-        bmi_menu = tk.Menu(menubar, tearoff=0)
-        menubar.add_cascade(label="BMI計算", menu=bmi_menu)
-        bmi_menu.add_command(label="BMIを計算", command=self.calculate_bmi)
-
-        history_menu = tk.Menu(menubar, tearoff=0)
-        menubar.add_cascade(label="履歴", menu=history_menu)
-        history_menu.add_command(label="履歴を表示", command=self.show_history)
+      
+      
 
     def on_button_click(self, value):
         if value == "=":
@@ -99,12 +113,12 @@ class CalculatorApp(tk.Tk):
                 calculation = f"{self.expression} = {result}"
                 self.history.append(calculation)
                 if len(self.history) > self.history_limit:
-                    self.history.pop(0)  # 履歴の上限を制限
+                    self.history.pop(0)  
                 self.expression = result
             except Exception as e:
                 messagebox.showerror("エラー", "計算エラー: " + str(e))
                 self.expression = ""
-            # リストボックスに履歴を表示
+           
             self.show_history()
         else:
             self.expression += value
@@ -135,7 +149,7 @@ class CalculatorApp(tk.Tk):
         try:
             value = float(self.expression)
             result = value * 1.1
-            result = -int(-result)  # Round up to the nearest whole number
+            result = -int(-result)  
             self.expression = str(result)
             self.result_var.set(self.expression)
         except ValueError:
@@ -145,7 +159,7 @@ class CalculatorApp(tk.Tk):
         try:
             value = float(self.expression)
             result = value / 1.1
-            result = -int(-result)  # Round up to the nearest whole number
+            result = -int(-result) 
             self.expression = str(result)
             self.result_var.set(self.expression)
         except ValueError:
@@ -153,14 +167,31 @@ class CalculatorApp(tk.Tk):
 
     def calculate_bmi(self):
 
-        details = simpledialog.askstring("BMI計算", "体重(kg)と身長(cm)をカンマで区切って入力してください(例:60,170)")
+        if not self.weight_entry.get() and not self.height_entry.get():
+            messagebox.showerror("エラー", "体重と身長の両方を入力してください")
+            return
+        
+        if not self.weight_entry.get():
+            messagebox.showerror("エラー", "体重を入力してください")
+        
+            return
 
-        if details:
-            weight, height_cm = map(float, details.split(','))
-            height_m = height_cm / 100
-            bmi = weight / (height_m ** 2)
-            messagebox.showinfo("BMI計算結果", f"BMI: {bmi:.2f}")
+        if not self.height_entry.get():
+            messagebox.showerror("エラー", "身長を入力してください")
+            return
 
+        height_cm = float(self.height_entry.get())
+        weight = float(self.weight_entry.get())
+
+        height_m = height_cm / 100
+        bmi = weight / (height_m ** 2)
+
+        bmi_str = format(bmi, '.2f')
+        self.result_label.config(text=f"BMI: {bmi_str}")
+
+        self.height_entry.delete(0, 'end')
+        self.weight_entry.delete(0, 'end')
+        
     def show_history(self):
         self.history_listbox.delete(0, tk.END)
         for item in self.history:
