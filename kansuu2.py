@@ -8,7 +8,7 @@ class CalculatorApp(tk.Tk):
         super().__init__()
 
         self.title("電卓アプリ")
-        self.geometry("300x400")
+        self.geometry("310x500")
 
         self.state = 0
 
@@ -35,28 +35,36 @@ class CalculatorApp(tk.Tk):
         frame2 = tk.Frame(self, width=200, height=100)
         frame2.pack()  
 
+        self.label_title=tk.Label(frame2,text ="----BMIの計算画面----") 
+        self.label_title.pack(padx=10 ,pady=10 )
+        
         self.label1 = tk.Label(frame2, text="身長(cm):")
-        self.label1.grid(row=0, column=0, padx=10, pady=10)
+        # self.label1.grid(row=0, column=0, padx=10, pady=10)
+        self.label1.pack(pady=5)
         
-        self.height_entry = tk.Entry(frame2)
-        self.height_entry.grid(row=0, column=1, padx=10, pady=10)
-
+        self.height_entry = tk.Entry(frame2,font = ("Arial",15))
+        # self.height_entry.grid(row=0, column=1, padx=10, pady=10)
+        self.height_entry.pack(padx=5, pady=10)
+        
         self.label2 = tk.Label(frame2, text="体重(kg):")
-        self.label2.grid(row=1, column=0, padx=10, pady=10)
+        # self.label2.grid(row=1, column=0, padx=10, pady=10)
+        self.label2.pack()
         
-        self.weight_entry = tk.Entry(frame2)
-        self.weight_entry.grid(row=1, column=1, padx=10, pady=10)
+        self.weight_entry = tk.Entry(frame2,font = ("Arial",15))
+        # self.weight_entry.grid(row=1, column=1, padx=10, pady=10)
+        self.weight_entry.pack(padx=5, pady=10)
         
         self.button = tk.Button(frame2, text = "計算", command=self.calculate_bmi) 
-        self.button.grid(row=2, columnspan=2, padx=10, pady=10)
+        # self.button.grid(row=2, columnspan=2, padx=10, pady=10)
+        self.button.pack(padx=5, pady=10 ,side=tk.LEFT)
         
-        self.result_label = tk.Label(frame2,text = "ここにBMIが表示されます")
-        self.result_label.grid(row=3, columnspan=2, padx=10)
-        
+        self.result_label = tk.Label(frame2,text = "BMIを表示",font = ("meirio",10))
+        # self.result_label.grid(row=3, columnspan=2, padx=10)
+        self.result_label.pack(padx=10, pady=10)
 
         button_grid = [
-            ("7", 1, 0), ("8", 1, 1), ("9", 1, 2), ("/", 1, 3),
-            ("4", 2, 0), ("5", 2, 1), ("6", 2, 2), ("*", 2, 3),
+            ("7", 1, 0), ("8", 1, 1), ("9", 1, 2), ("÷", 1, 3),
+            ("4", 2, 0), ("5", 2, 1), ("6", 2, 2), ("×", 2, 3),
             ("1", 3, 0), ("2", 3, 1), ("3", 3, 2), ("-", 3, 3),
             ("0", 4, 0), (".", 4, 1), ("=", 5, 2), ("+", 4, 3),
             ("(", 5, 0), (")", 5, 1),
