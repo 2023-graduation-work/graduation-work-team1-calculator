@@ -8,7 +8,7 @@ class CalculatorApp(tk.Tk):
         super().__init__()
 
         self.title("電卓アプリ")
-        self.geometry("310x500")
+        self.geometry("310x550")
 
         self.state = 0
 
@@ -62,6 +62,9 @@ class CalculatorApp(tk.Tk):
         # self.result_label.grid(row=3, columnspan=2, padx=10)
         self.result_label.pack(padx=10, pady=10)
 
+        self.bmi_result = tk.Label(frame2, text = "判別",font = ("meirio",10))
+        self.bmi_result.pack(padx =10 ,pady =10 )
+        
         button_grid = [
             ("7", 1, 0), ("8", 1, 1), ("9", 1, 2), ("/", 1, 3),
             ("4", 2, 0), ("5", 2, 1), ("6", 2, 2), ("*", 2, 3),
@@ -199,6 +202,20 @@ class CalculatorApp(tk.Tk):
 
         self.height_entry.delete(0, 'end')
         self.weight_entry.delete(0, 'end')
+        
+        try:
+            bmi = float(bmi_str)
+            if bmi > 30:
+                self.bmi_result.config(text="高度肥満です")
+            elif bmi > 25:
+                self.bmi_result.config(text="肥満です")
+            elif bmi > 18.5:
+                self.bmi_result.config(text="普通体重です")
+            else:
+                self.bmi_result.config(text="やせ型です")
+        
+        except ValueError:
+            messagebox.showerror("エラー", "BMIの値が不正です")
         
     def show_history(self):
         self.history_listbox.delete(0, tk.END)
