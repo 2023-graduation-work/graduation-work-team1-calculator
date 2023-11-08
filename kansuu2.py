@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import messagebox
-from tkinter import simpledialog
 
 
 class CalculatorApp(tk.Tk):
@@ -8,7 +7,7 @@ class CalculatorApp(tk.Tk):
         super().__init__()
 
         self.title("電卓アプリ")
-        self.geometry("310x500")
+        self.geometry("310x550")
 
         self.state = 0
 
@@ -38,34 +37,34 @@ class CalculatorApp(tk.Tk):
         frame2 = tk.Frame(self, width=200, height=100)
         frame2.pack()
 
-        self.label_title = tk.Label(frame2, text="----BMIの計算画面----")
+        self.label_title = tk.Label(frame2, text="---------BMIの計算画面---------",font = ("meirio",10),)
         self.label_title.pack(padx=10, pady=10)
 
-        self.label1 = tk.Label(frame2, text="身長(cm):")
+        self.label1 = tk.Label(frame2, text="身長(cm):",font = ("meirio",10))
         # self.label1.grid(row=0, column=0, padx=10, pady=10)
         self.label1.pack(pady=5)
 
-        self.height_entry = tk.Entry(frame2, font=("Arial", 15))
+        self.height_entry = tk.Entry(frame2, font=("meirio", 15))
         # self.height_entry.grid(row=0, column=1, padx=10, pady=10)
         self.height_entry.pack(padx=5, pady=10)
 
-        self.label2 = tk.Label(frame2, text="体重(kg):")
+        self.label2 = tk.Label(frame2, text="体重(kg):",font = ("meirio",10))
         # self.label2.grid(row=1, column=0, padx=10, pady=10)
         self.label2.pack()
 
-        self.weight_entry = tk.Entry(frame2, font=("Arial", 15))
+        self.weight_entry = tk.Entry(frame2, font=("meirio", 15))
         # self.weight_entry.grid(row=1, column=1, padx=10, pady=10)
         self.weight_entry.pack(padx=5, pady=10)
 
-        self.button = tk.Button(frame2, text="計算", command=self.calculate_bmi)
+        self.button = tk.Button(frame2,width=3,height=1,bg= "skyblue",font =("meirio",15), text="=", command=self.calculate_bmi)
         # self.button.grid(row=2, columnspan=2, padx=10, pady=10)
         self.button.pack(padx=5, pady=10, side=tk.LEFT)
 
-        self.result_label = tk.Label(frame2, text="BMIを表示", font=("meirio", 10))
+        self.result_label = tk.Label(frame2, text="BMIを表示", font=("meirio",15))
         # self.result_label.grid(row=3, columnspan=2, padx=10)
         self.result_label.pack(padx=10, pady=10)
 
-        self.bmi_result = tk.Label(frame2, text = "判別",font = ("meirio",10))
+        self.bmi_result = tk.Label(frame2, text = "判別",font = (15))
         self.bmi_result.pack(padx =10 ,pady =10 )
 
         button_grid = [
@@ -95,7 +94,7 @@ class CalculatorApp(tk.Tk):
             )
             button.grid(row=row, column=col, sticky="nsew")
 
-        clear_button = tk.Button(parent_frame, text="C", command=self.clear)
+        clear_button = tk.Button(parent_frame, text="C", command=self.clear, bg = "firebrick1")
         clear_button.grid(row=4, column=2, sticky="nsew")
 
         # Change the grid() call for the "=" button to span 2 columns
