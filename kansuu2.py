@@ -151,8 +151,13 @@ class CalculatorApp(tk.Tk):
                 value = "*"
             elif value == "÷":
                 value = "/"
-            self.expression += value
-            self.result_var.set(self.expression)
+
+            # 数字の前に × や ÷ を入力させない検証
+            if (value == "*" or value == "/") and len(self.expression) == 0:
+                messagebox.showerror("エラー", "最初に数字を入力してください")
+            else:
+                self.expression += value
+                self.result_var.set(self.expression)
 
     def clear(self):
         self.expression = ""
