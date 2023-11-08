@@ -69,11 +69,11 @@ class CalculatorApp(tk.Tk):
             ("7", 1, 0),
             ("8", 1, 1),
             ("9", 1, 2),
-            ("/", 1, 3),
+            ("÷", 1, 3),  # ボタンのテキストを÷に変更
             ("4", 2, 0),
             ("5", 2, 1),
             ("6", 2, 2),
-            ("*", 2, 3),
+            ("×", 2, 3),
             ("1", 3, 0),
             ("2", 3, 1),
             ("3", 3, 2),
@@ -131,20 +131,26 @@ class CalculatorApp(tk.Tk):
     def on_button_click(self, value):
         if value == "=":
             try:
+                # ここでは演算子の置換を行わず、そのまま式を評価する
                 result = str(eval(self.expression))
                 calculation = f"{self.expression} = {result}"
                 self.history.append(calculation)
                 if len(self.history) > self.history_limit:
                     self.history.pop(0)
                 self.expression = result
+                self.result_var.set(result)  # 計算結果を表示
             except Exception as e:
                 messagebox.showerror("エラー", "計算エラー: " + str(e))
                 self.expression = ""
-
             self.show_history()
         else:
+            # ここで * と / を × と ÷ に置換
+            if value == "×":
+                value = "*"
+            elif value == "÷":
+                value = "/"
             self.expression += value
-        self.result_var.set(self.expression)
+            self.result_var.set(self.expression)
 
     def clear(self):
         self.expression = ""
