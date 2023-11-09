@@ -37,10 +37,14 @@ class CalculatorApp(tk.Tk):
         frame2 = tk.Frame(self, width=200, height=100)
         frame2.pack()
 
-        self.label_title = tk.Label(frame2, text="---------BMIの計算画面---------",font = ("meirio",10),)
+        self.label_title = tk.Label(
+            frame2,
+            text="---------BMIの計算画面---------",
+            font=("meirio", 10),
+        )
         self.label_title.pack(padx=10, pady=10)
 
-        self.label1 = tk.Label(frame2, text="身長(cm):",font = ("meirio",10))
+        self.label1 = tk.Label(frame2, text="身長(cm):", font=("meirio", 10))
         # self.label1.grid(row=0, column=0, padx=10, pady=10)
         self.label1.pack(pady=5)
 
@@ -48,7 +52,7 @@ class CalculatorApp(tk.Tk):
         # self.height_entry.grid(row=0, column=1, padx=10, pady=10)
         self.height_entry.pack(padx=5, pady=10)
 
-        self.label2 = tk.Label(frame2, text="体重(kg):",font = ("meirio",10))
+        self.label2 = tk.Label(frame2, text="体重(kg):", font=("meirio", 10))
         # self.label2.grid(row=1, column=0, padx=10, pady=10)
         self.label2.pack()
 
@@ -56,16 +60,24 @@ class CalculatorApp(tk.Tk):
         # self.weight_entry.grid(row=1, column=1, padx=10, pady=10)
         self.weight_entry.pack(padx=5, pady=10)
 
-        self.button = tk.Button(frame2,width=3,height=1,bg= "skyblue",font =("meirio",15), text="=", command=self.calculate_bmi)
+        self.button = tk.Button(
+            frame2,
+            width=3,
+            height=1,
+            bg="skyblue",
+            font=("meirio", 15),
+            text="=",
+            command=self.calculate_bmi,
+        )
         # self.button.grid(row=2, columnspan=2, padx=10, pady=10)
         self.button.pack(padx=5, pady=10, side=tk.LEFT)
 
-        self.result_label = tk.Label(frame2, text="BMIを表示", font=("meirio",15))
+        self.result_label = tk.Label(frame2, text="BMIを表示", font=("meirio", 15))
         # self.result_label.grid(row=3, columnspan=2, padx=10)
         self.result_label.pack(padx=10, pady=10)
 
-        self.bmi_result = tk.Label(frame2, text = "判別",font = (15))
-        self.bmi_result.pack(padx =10 ,pady =10 )
+        self.bmi_result = tk.Label(frame2, text="判別", font=(15))
+        self.bmi_result.pack(padx=10, pady=10)
 
         button_grid = [
             ("7", 1, 0),
@@ -94,7 +106,9 @@ class CalculatorApp(tk.Tk):
             )
             button.grid(row=row, column=col, sticky="nsew")
 
-        clear_button = tk.Button(parent_frame, text="C", command=self.clear, bg = "firebrick1")
+        clear_button = tk.Button(
+            parent_frame, text="C", command=self.clear, bg="firebrick1"
+        )
         clear_button.grid(row=4, column=2, sticky="nsew")
 
         # Change the grid() call for the "=" button to span 2 columns
@@ -133,20 +147,19 @@ class CalculatorApp(tk.Tk):
     def on_button_click(self, value):
         if value == "=":
             try:
-                # ここでは演算子の置換を行わず、そのまま式を評価する
                 result = str(eval(self.expression))
                 calculation = f"{self.expression} = {result}"
                 self.history.append(calculation)
                 if len(self.history) > self.history_limit:
                     self.history.pop(0)
-                self.expression = result
-                self.result_var.set(result)  # 計算結果を表示
+                self.expression = ""  # Clear the expression
+                self.result_var.set(result)
             except Exception as e:
                 messagebox.showerror("エラー", "計算エラー: " + str(e))
                 self.expression = ""
             self.show_history()
         else:
-            # ここで * と / を × と ÷ に置換
+            # ここで * と / を × や ÷ に置換
             if value == "×":
                 value = "*"
             elif value == "÷":
@@ -156,6 +169,8 @@ class CalculatorApp(tk.Tk):
             if (value == "*" or value == "/") and len(self.expression) == 0:
                 messagebox.showerror("エラー", "最初に数字を入力してください")
             else:
+                if self.result_var.get() == "0" or self.expression == "Error":
+                    self.expression = ""
                 self.expression += value
                 self.result_var.set(self.expression)
 
@@ -226,7 +241,7 @@ class CalculatorApp(tk.Tk):
 
         self.height_entry.delete(0, "end")
         self.weight_entry.delete(0, "end")
-        
+
         try:
             bmi = float(bmi_str)
             if bmi > 30:
@@ -237,7 +252,7 @@ class CalculatorApp(tk.Tk):
                 self.bmi_result.config(text="普通体重です")
             else:
                 self.bmi_result.config(text="やせ型です")
-        
+
         except ValueError:
             messagebox.showerror("エラー", "BMIの値が不正です")
 
