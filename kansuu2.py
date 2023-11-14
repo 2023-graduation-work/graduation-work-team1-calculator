@@ -45,19 +45,15 @@ class CalculatorApp(tk.Tk):
         self.label_title.pack(padx=10, pady=10)
 
         self.label1 = tk.Label(frame2, text="身長(cm):", font=("meirio", 10))
-        # self.label1.grid(row=0, column=0, padx=10, pady=10)
         self.label1.pack(pady=5)
 
         self.height_entry = tk.Entry(frame2, font=("meirio", 15))
-        # self.height_entry.grid(row=0, column=1, padx=10, pady=10)
         self.height_entry.pack(padx=5, pady=10)
 
         self.label2 = tk.Label(frame2, text="体重(kg):", font=("meirio", 10))
-        # self.label2.grid(row=1, column=0, padx=10, pady=10)
         self.label2.pack()
 
         self.weight_entry = tk.Entry(frame2, font=("meirio", 15))
-        # self.weight_entry.grid(row=1, column=1, padx=10, pady=10)
         self.weight_entry.pack(padx=5, pady=10)
 
         self.button = tk.Button(
@@ -69,14 +65,23 @@ class CalculatorApp(tk.Tk):
             text="=",
             command=self.calculate_bmi,
         )
-        # self.button.grid(row=2, columnspan=2, padx=10, pady=10)
         self.button.pack(padx=5, pady=10, side=tk.LEFT)
 
+        self.clear_bmi_button = tk.Button(
+            frame2,
+            width=3,
+            height=1,
+            bg="orange",
+            font=("meirio", 15),
+            text="C",
+            command=self.clear_bmi,
+        )
+        self.clear_bmi_button.pack(padx=5, pady=10, side=tk.LEFT)
+
         self.result_label = tk.Label(frame2, text="BMIを表示", font=("meirio", 15))
-        # self.result_label.grid(row=3, columnspan=2, padx=10)
         self.result_label.pack(padx=10, pady=10)
 
-        self.bmi_result = tk.Label(frame2, text="判別", font=(15))
+        self.bmi_result = tk.Label(frame2, text="判別", font=("meirio", 15))
         self.bmi_result.pack(padx=10, pady=10)
 
         button_grid = [
@@ -154,12 +159,13 @@ class CalculatorApp(tk.Tk):
                     self.history.pop(0)
                 self.expression = ""  # Clear the expression
                 self.result_var.set(result)
+                self.update_bmi_display(float(result))
             except Exception as e:
                 messagebox.showerror("エラー", "計算エラー: " + str(e))
                 self.expression = ""
             self.show_history()
         else:
-            # ここで * と / を × や ÷ に置換
+                        # ここで * と / を × や ÷ に置換
             if value == "×":
                 value = "*"
             elif value == "÷":
@@ -177,6 +183,12 @@ class CalculatorApp(tk.Tk):
     def clear(self):
         self.expression = ""
         self.result_var.set("0")
+
+    def clear_bmi(self):
+        self.result_label.config(text="BMIを表示")
+        self.bmi_result.config(text="判別")
+        self.height_entry.delete(0, "end")
+        self.weight_entry.delete(0, "end")
 
     def rounding(self, method):
         try:
@@ -252,7 +264,23 @@ class CalculatorApp(tk.Tk):
                 self.bmi_result.config(text="普通体重です")
             else:
                 self.bmi_result.config(text="やせ型です")
+        except ValueError:
+            messagebox.showerror("エラー", "BMIの値が不正です")
 
+    def update_bmi_display(self, bmi):
+        bmi_str = format(bmi, ".2f")
+        self.result_label.config(text=f"BMI: {bmi_str}")
+
+        try:
+            bmi = float(bmi_str)
+            if bmi > 30:
+                self.bmi_result.config(text="高度肥満です")
+            elif bmi > 25:
+                self.bmi_result.config(text="肥満です")
+            elif bmi > 18.5:
+                self.bmi_result.config(text="普通体重です")
+            else:
+                self.bmi_result.config(text="やせ型です")
         except ValueError:
             messagebox.showerror("エラー", "BMIの値が不正です")
 
@@ -268,3 +296,4 @@ class CalculatorApp(tk.Tk):
 if __name__ == "__main__":
     app = CalculatorApp()
     app.mainloop()
+
