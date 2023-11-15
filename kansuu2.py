@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
 
-
 class CalculatorApp(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -149,6 +148,30 @@ class CalculatorApp(tk.Tk):
         tax_menu.add_command(label="税抜価格から税込価格を計算", command=self.calculate_tax_included)
         tax_menu.add_command(label="税込価格から税抜価格を計算", command=self.calculate_tax_excluded)
 
+        info_menu = tk.Menu(menubar, tearoff=0)
+        menubar.add_cascade(label="BMI情報", menu=info_menu)
+        info_menu.add_command(label="BMIとは", command=self.show_bmi_info)
+
+    def show_bmi_info(self):
+        info_window = tk.Toplevel(self)
+        info_window.title("BMI情報")
+
+        info_label = tk.Label(
+            info_window,
+            text="BMI（ボディマス指数）は、身長と体重から算出される指標で、"
+                    "用いられます。以下はBMIの分類です：\n\n"
+        " - 18.5未満: やせ型\n"
+        " - 18.5から24.9: 普通体重\n"
+        " - 25から29.9: 肥満\n"
+        " - 30以上: 高度肥満\n\n"
+        "BMIはあくまで参考値であり、個々の体格や筋肉量なども考慮する必要があります。",
+            font=("Helvetica", 10),
+            padx=5,
+            pady=5,
+            wraplength=200  # 幅を指定して、ラベルが正方形の形になるようにする
+        )
+        info_label.pack()
+
     def on_button_click(self, value):
         if value == "=":
             try:
@@ -165,7 +188,7 @@ class CalculatorApp(tk.Tk):
                 self.expression = ""
             self.show_history()
         else:
-                        # ここで * と / を × や ÷ に置換
+            # ここで * と / を × や ÷ に置換
             if value == "×":
                 value = "*"
             elif value == "÷":
@@ -296,4 +319,3 @@ class CalculatorApp(tk.Tk):
 if __name__ == "__main__":
     app = CalculatorApp()
     app.mainloop()
-
