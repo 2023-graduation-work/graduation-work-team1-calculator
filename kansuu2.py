@@ -33,6 +33,55 @@ class CalculatorApp(tk.Tk):
         )
         display.grid(row=0, column=0, columnspan=4, sticky="news")
 
+        frame2 = tk.Frame(self, width=200, height=100)
+        frame2.pack()
+
+        self.label_title = tk.Label(
+            frame2,
+            text="---------BMIの計算画面---------",
+            font=("meirio", 10),
+        )
+        self.label_title.pack(padx=10, pady=10)
+
+        self.label1 = tk.Label(frame2, text="身長(cm):", font=("meirio", 10))
+        self.label1.pack(pady=5)
+
+        self.height_entry = tk.Entry(frame2, font=("meirio", 15))
+        self.height_entry.pack(padx=5, pady=10)
+
+        self.label2 = tk.Label(frame2, text="体重(kg):", font=("meirio", 10))
+        self.label2.pack()
+
+        self.weight_entry = tk.Entry(frame2, font=("meirio", 15))
+        self.weight_entry.pack(padx=5, pady=10)
+
+        self.button = tk.Button(
+            frame2,
+            width=3,
+            height=1,
+            bg="skyblue",
+            font=("meirio", 15),
+            text="=",
+            command=self.calculate_bmi,
+        )
+        self.button.pack(padx=5, pady=10, side=tk.LEFT)
+
+        self.clear_bmi_button = tk.Button(
+            frame2,
+            width=3,
+            height=1,
+            bg="orange",
+            font=("meirio", 15),
+            text="C",
+            command=self.clear_bmi,
+        )
+        self.clear_bmi_button.pack(padx=5, pady=10, side=tk.LEFT)
+
+        self.result_label = tk.Label(frame2, text="BMIを表示", font=("meirio", 15))
+        self.result_label.pack(padx=10, pady=10)
+
+        self.bmi_result = tk.Label(frame2, text="判別", font=("meirio", 15))
+        self.bmi_result.pack(padx=10, pady=10)
 
         button_grid = [
             ("7", 1, 0),
@@ -84,72 +133,6 @@ class CalculatorApp(tk.Tk):
         scrollbar.config(command=self.history_listbox.yview)
         history_frame.grid(row=6, column=0, columnspan=4, sticky="nsew")
 
-    
-    #BMI
-        self.frame2 = tk.Frame(self, width=200, height=100)
-    
-        buttondel= tk.Button(self, text="Dell",command=self.button_click_del)
-        buttondel.pack()
-        
-        self.label_title = tk.Label(
-            self.frame2,
-            text="---------BMIの計算画面---------",
-            font=("meirio", 10),
-        )
-        self.label_title.pack(padx=10, pady=10)
-
-        self.label1 = tk.Label(self.frame2, text="身長(cm):", font=("meirio", 10))
-        self.label1.pack(pady=5)
-
-        self.height_entry = tk.Entry(self.frame2, font=("meirio", 15))
-        self.height_entry.pack(padx=5, pady=10)
-
-        self.label2 = tk.Label(self.frame2, text="体重(kg):", font=("meirio", 10))
-        self.label2.pack()
-
-        self.weight_entry = tk.Entry(self.frame2, font=("meirio", 15))
-        self.weight_entry.pack(padx=5, pady=10)
-
-        self.button = tk.Button(
-            self.frame2,
-            width=3,
-            height=1,
-            bg="skyblue",
-            font=("meirio", 15),
-            text="=",
-            command=self.calculate_bmi,
-        )
-        self.button.pack(padx=5, pady=10, side=tk.LEFT)
-
-        self.clear_bmi_button = tk.Button(
-            self.frame2,
-            width=3,
-            height=1,
-            bg="orange",
-            font=("meirio", 15),
-            text="C",
-            command=self.clear_bmi,
-        )
-        self.clear_bmi_button.pack(padx=5, pady=10, side=tk.LEFT)
-
-        self.result_label = tk.Label(self.frame2, text="BMIを表示", font=("meirio", 15))
-        self.result_label.pack(padx=10, pady=10)
-
-        self.bmi_result = tk.Label(self.frame2, text="判別", font=("meirio", 15))
-        self.bmi_result.pack(padx=10, pady=10)
-
-        self.frame2.pack()
-        
-    def button_click_del(self):
-        self.frame2.pack_forget()
-
-        self.button2 = tk.Button(self,text="BMIの計算画面を表示",command=self.button_click_pack)
-        self.button2.pack()
-    
-    def button_click_pack(self):
-        self.button2.destroy()
-        self.frame2.pack()
-    
     def create_menu(self):
         menubar = tk.Menu(self)
         self.config(menu=menubar)
@@ -168,7 +151,6 @@ class CalculatorApp(tk.Tk):
         info_menu = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label="BMI情報", menu=info_menu)
         info_menu.add_command(label="BMIとは", command=self.show_bmi_info)
-        # info_menu.add_command(label = "BMIの計算画面",command=self.widget2)
 
     def show_bmi_info(self):
         info_window = tk.Toplevel(self)
