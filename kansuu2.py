@@ -6,10 +6,28 @@ class CalculatorApp(tk.Tk):
         super().__init__()
 
         self.title("電卓アプリ")
-        self.geometry("310x550")
+        
+        #geometryの値の変数
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+        
+        #geometryの値です画面の表示を中央に変更しました
+        window_width = 310
+        window_height = 550
+        
+        #画面表示位置の設定、実行時の画面の表示を中央に変更しました
+        x_position = (screen_width - window_width) // 2
+        y_position = (screen_height - window_height) // 2 - 50
+
+
+        self.geometry(f"{window_width}x{window_height}+{x_position}+{y_position}")
+
+        #画面の大きさの変更を不可にし、最大化をも無効に変更
+        self.resizable(0, 0)
+        self.resizable(width=False, height=False)
 
         self.state = 0
-
+        
         # メインフレーム
         main_frame = tk.Frame(self)
         main_frame.pack()
@@ -88,8 +106,8 @@ class CalculatorApp(tk.Tk):
     #BMI
         self.frame2 = tk.Frame(self, width=200, height=100)
     
-        buttondel= tk.Button(self, text="Dell",command=self.button_click_del)
-        buttondel.pack()
+        self.buttondel= tk.Button(self.frame2, text="閉じる",command=self.button_click_del)
+        self.buttondel.pack()
         
         self.label_title = tk.Label(
             self.frame2,
@@ -142,14 +160,14 @@ class CalculatorApp(tk.Tk):
         
     def button_click_del(self):
         self.frame2.pack_forget()
-
+        self.geometry("310x270")
         self.button2 = tk.Button(self,text="BMIの計算画面を表示",command=self.button_click_pack)
-        self.button2.pack()
+        self.button2.pack(expand=True, fill=tk.X)
     
     def button_click_pack(self):
         self.button2.destroy()
         self.frame2.pack()
-    
+        self.geometry("310x550")
     def create_menu(self):
         menubar = tk.Menu(self)
         self.config(menu=menubar)
