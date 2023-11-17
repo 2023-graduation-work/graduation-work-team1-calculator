@@ -219,12 +219,18 @@ class CalculatorApp(tk.Tk):
     def on_button_click(self, value):
         if value == "=":
             try:
+                # ×を*に ÷を/置換
+                self.expression = self.expression.replace("×", "*").replace("÷", "/")
                 result = str(eval(self.expression))
-                calculation = f"{self.expression} = {result}"
+                # ヒストリー用に置換
+                calculation = f"{self.expression.replace("*", "×").replace("/", "÷")} = {result}"
                 self.history.append(calculation)
                 if len(self.history) > self.history_limit:
                     self.history.pop(0)
                 self.expression = ""  # Clear the expression
+                print(f'calculation : {calculation}')
+                print(f'result : {result}')
+                print(f'expression : {self.expression}')
                 self.result_var.set(result)
                 self.update_bmi_display(float(result))
             except Exception as e:
@@ -234,9 +240,9 @@ class CalculatorApp(tk.Tk):
         else:
             # ここで * と / を × や ÷ に置換
             if value == "×":
-                value = "*"
+                value = "×"
             elif value == "÷":
-                value = "/"
+                value = "÷"
 
             # 数字の前に × や ÷ を入力させない検証
             if (value == "*" or value == "/") and len(self.expression) == 0:
