@@ -198,23 +198,61 @@ class CalculatorApp(tk.Tk):
         info_window.resizable(0, 0)
         info_window.resizable(width=False, height=False)
 
+    def show_bmi_info(self):
+        info_window = tk.Toplevel(self)
+        info_window.title("BMI情報")
+
+        info_window.resizable(0, 0)
+        info_window.resizable(width=False, height=False)
+
         info_label = tk.Label(
             info_window,
-            relief=tk.SOLID,
-            text="BMI(ボディマス指数)は、\n身長と体重から算出される\n指標で、用いられます。以下はBMIの分類です:\n\n"
-        " - 18.5未満: やせ型\n"
-        " - 18.5から24.9: 普通体重\n"
-        " - 25から29.9: 肥満\n"
-        " - 30以上: 高度肥満\n\n"
-        "BMIはあくまで参考値であり、個々の体格や筋肉量なども\n考慮する必要があります。",
+            text="BMI(ボディマス指数)は、\n身長と体重から算出される\n指標で、用いられます。\n以下はBMIの分類です:",
+        
+       
             font=("Helvetica", 10),
             padx=5,
             pady=5,
             wraplength=200,  # 幅を指定して、ラベルが正方形の形になるようにする
-            anchor=tk.W
+            anchor=tk.W,
+            justify="left"
         )
         
         info_label.pack(anchor=tk.W)
+
+        info_label2 = tk.Label(
+            info_window,
+            
+            text=
+        " 18.5未満: やせ型\n"
+        " 18.5から24.9: 普通体重\n"
+        " 25から29.9: 肥満\n"
+        " 30以上: 高度肥満",
+       
+            font=("Helvetica", 10),
+            padx=5,
+            pady=5,
+            wraplength=200,  # 幅を指定して、ラベルが正方形の形になるようにする
+            
+        
+        
+        )
+        
+        info_label2.pack()
+
+
+        info_label3 = tk.Label(
+            info_window,
+            text="BMIはあくまで参考値であり、個々の体格や筋肉量なども\n考慮する必要があります。",
+            font=("Helvetica", 10),
+            padx=5,
+            pady=5,
+            wraplength=200,  # 幅を指定して、ラベルが正方形の形になるようにする
+            anchor=tk.W,
+            justify="left"
+        )
+        
+        info_label3.pack(anchor=tk.W)
 
     def on_button_click(self, value):
         if value == "=":
