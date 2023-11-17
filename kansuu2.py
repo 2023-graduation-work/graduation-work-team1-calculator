@@ -66,10 +66,10 @@ class CalculatorApp(tk.Tk):
             ("1", 3, 0),
             ("2", 3, 1),
             ("3", 3, 2),
-            ("-", 3, 3),
+            (" - ", 3, 3),
             ("0", 4, 0),
             (".", 4, 1),
-            ("+", 4, 3),
+            (" + ", 4, 3),
             ("(", 5, 0),
             (")", 5, 1),
             ("=", 5, 2),
@@ -164,9 +164,8 @@ class CalculatorApp(tk.Tk):
         
     def button_click_del(self):
         self.frame2.pack_forget()
-        self.geometry("310x270")
-        self.button2 = tk.Button(self,text="BMIの計算画面を表示",command=self.button_click_pack)
-        self.button2.pack(expand=True, fill=tk.X)
+        self.geometry("310x260")
+       
     
     def button_click_pack(self):
         # self.button2.destroy()
