@@ -43,6 +43,8 @@ class CalculatorApp(tk.Tk):
         self.history_limit = 10
 
     def create_widgets(self, parent_frame):
+        self.geometry("310x260")
+        
         display = tk.Entry(
             parent_frame,
             textvariable=self.result_var,
@@ -158,6 +160,8 @@ class CalculatorApp(tk.Tk):
 
         self.frame2.pack()
         
+        self.frame2.pack_forget()
+        
     def button_click_del(self):
         self.frame2.pack_forget()
         self.geometry("310x270")
@@ -165,7 +169,7 @@ class CalculatorApp(tk.Tk):
         self.button2.pack(expand=True, fill=tk.X)
     
     def button_click_pack(self):
-        self.button2.destroy()
+        # self.button2.destroy()
         self.frame2.pack()
         self.geometry("310x550")
     def create_menu(self):
