@@ -4,8 +4,10 @@ from tkinter import messagebox
 class CalculatorApp(tk.Tk):
     def __init__(self):
         super().__init__()
-
+        self.bind_keys() 
         self.title("電卓アプリ")
+        
+        self.bindmode = True
         
         #geometryの値の変数
         screen_width = self.winfo_screenwidth()
@@ -13,7 +15,7 @@ class CalculatorApp(tk.Tk):
         
         #geometryの値です画面の表示を中央に変更しました
         window_width = 310
-        window_height = 550
+        window_height = 250
         
         #画面表示位置の設定、実行時の画面の表示を中央に変更しました
         x_position = (screen_width - window_width) // 2
@@ -42,17 +44,71 @@ class CalculatorApp(tk.Tk):
         self.history = []
         self.history_limit = 10
 
-    def create_widgets(self, parent_frame):
-        self.geometry("310x260")
+    def hide_cursor():
+      root.config(cursor="none")
+
+      root = tk.Tk()
+    
+    def bind_keys(self):
+        # 数字や演算子などのキーと対応するメソッドを設定
+        key_bindings = {
+            "1": lambda: self.on_button_click("1"),
+            "2": lambda: self.on_button_click("2"),
+            "3": lambda: self.on_button_click("3"),
+            "4": lambda: self.on_button_click("4"),
+            "5": lambda: self.on_button_click("5"),
+            "6": lambda: self.on_button_click("6"),
+            "7": lambda: self.on_button_click("7"),
+            "8": lambda: self.on_button_click("8"),
+            "9": lambda: self.on_button_click("9"),
+            "0": lambda: self.on_button_click("0"),
+            "+": lambda: self.on_button_click("+"),
+            "-": lambda: self.on_button_click("-"),
+            "*": lambda: self.on_button_click("×"),
+            "/": lambda: self.on_button_click("÷"),
+            ".": lambda: self.on_button_click("."),
+            "=": lambda: self.on_button_click("="),
+            "<BackSpace>": self.clear,
+        }
         
-        display = tk.Entry(
+        
+
+        # 数字と演算子に対応するキーをバインド
+        for key, command in key_bindings.items():
+            if key not in ["+", "-", "*", "/", ".", "="]:  # 数字と演算子以外のキーは無視
+                self.bind(key, lambda event, cmd=command: cmd())
+            else:
+                self.bind(key, lambda event, cmd=command: cmd() if event.char.isdigit() or event.char in "+-*/." else None)
+    
+    def validate(self, new_text):
+        print("***VALIDATE***")
+        # 入力が数字のみかどうかを確認する関数
+        try:
+            float(new_text)
+            return True
+        except ValueError:
+            return False
+
+    def create_menu(self):
+        # メニューを作成するためのメソッド（未提供のため、必要に応じて追加してください）
+        pass
+
+    def create_widgets(self, parent_frame):
+        vcmd = (self.register(self.validate), "%P")
+
+      
+        self.display = tk.Entry(
             parent_frame,
             textvariable=self.result_var,
             font=("Helvetica", 20),
             justify="right",
+            validate="all",
+            validatecommand=vcmd,
+            insertbackground="white",
         )
-        display.grid(row=0, column=0, columnspan=4, sticky="news")
-
+        
+        self.display.grid(row=0, column=0, columnspan=4, sticky="news")
+        self.display.focus_set()
 
         button_grid = [
             ("7", 1, 0),
@@ -104,7 +160,6 @@ class CalculatorApp(tk.Tk):
         scrollbar.config(command=self.history_listbox.yview)
         history_frame.grid(row=6, column=0, columnspan=4, sticky="nsew")
 
-    
     #BMI
         self.frame2 = tk.Frame(self, width=200, height=100)
     
@@ -155,7 +210,7 @@ class CalculatorApp(tk.Tk):
         self.result_label = tk.Label(self.frame2, text="BMIを表示", font=("meirio", 15))
         self.result_label.pack(padx=10, pady=10)
 
-        self.bmi_result = tk.Label(self.frame2, text="判別", font=("meirio", 15))
+        self.bmi_result = tk.Label(self.frame2, text="診断結果", font=("meirio", 15))
         self.bmi_result.pack(padx=10, pady=10)
 
         self.frame2.pack()
@@ -233,11 +288,7 @@ class CalculatorApp(tk.Tk):
             padx=5,
             pady=5,
             wraplength=200,  # 幅を指定して、ラベルが正方形の形になるようにする
-            
-        
-        
-        )
-        
+        )       
         info_label2.pack()
 
 
@@ -255,6 +306,15 @@ class CalculatorApp(tk.Tk):
         info_label3.pack(anchor=tk.W)
 
     def on_button_click(self, value):
+        
+        print(str(self.focus_get()))
+        print(type(str(self.focus_get())))
+        if str(self.focus_get()) != ".!frame.!entry" and str(self.focus_get()) != ".":
+            # Displayにフォーカスを合わせる
+        
+            
+            return
+        
         if value == "=":
             try:
                 # ×を*に ÷を/置換
@@ -288,16 +348,19 @@ class CalculatorApp(tk.Tk):
             else:
                 if self.result_var.get() == "0" or self.expression == "Error":
                     self.expression = ""
+                    
                 self.expression += value
                 self.result_var.set(self.expression)
 
+            self.focus_set()
+            
     def clear(self):
         self.expression = ""
         self.result_var.set("0")
 
     def clear_bmi(self):
         self.result_label.config(text="BMIを表示")
-        self.bmi_result.config(text="判別")
+        self.bmi_result.config(text="診断結果")
         self.height_entry.delete(0, "end")
         self.weight_entry.delete(0, "end")
 
